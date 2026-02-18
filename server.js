@@ -7,6 +7,8 @@ import collectionRoutes from "./routes/collectionRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
 import investmentRoutes from "./routes/investmentRoutes.js";
 import expenseRoutes from "./routes/expenseRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import authMiddleware from "./middleware/auth.middleware.js";
 
 
 dotenv.config();
@@ -14,8 +16,13 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+app.use("/api", authMiddleware);
 
 app.use("/api/loans", loanRoutes);
 app.use("/api/collections", collectionRoutes);
